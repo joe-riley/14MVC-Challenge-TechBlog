@@ -35,6 +35,7 @@ DB_USER=root
 DB_PASS=password
 DB_APP_DATABASE=techblog
 ```
+Run the development environment with `npm run dev`
 
 ## Tests
 Run the following commands for the area you would like to see tested.
