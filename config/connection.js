@@ -1,6 +1,6 @@
 // Dependencies
 const Sequelize = require('sequelize');
-const process = require('dotenv');
+const dotenv = require('dotenv');
 
 // Creates mySQL connection using Sequelize
 // Include your MySQL user/password information
