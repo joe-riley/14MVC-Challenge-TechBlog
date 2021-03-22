@@ -120,8 +120,20 @@ router.post('/', async (req, res) => {
 });
 
 // Deletes a user
-router.delete('/:userId', (req, res) => {
-  res.json({message: 'Deletes a user'});
+router.delete('/:userId', async (req, res) => {
+  try {
+    const user = db.User.destroy({ 
+      where: {
+        id: req.params.userId,
+      },
+    })
+
+    res.json({message: 'User deleted.'});
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
 });
 
 
