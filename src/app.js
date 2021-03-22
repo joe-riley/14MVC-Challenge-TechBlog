@@ -45,6 +45,9 @@ const sess = {
 
 app.use(session(sess));
 
+
+const hbs = exphbs.create({helpers});
+
 // turn on routes
 app.use(routes);
 

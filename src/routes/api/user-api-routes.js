@@ -46,7 +46,6 @@ router.post('/login', async (req, res) => {
   try {
     const user = await db.User.findOne({
       attributes: {
-        exclude: ['password']
       },
       where: {
         username: req.body.username,
@@ -58,7 +57,7 @@ router.post('/login', async (req, res) => {
       return;
     }
 
-    const isPassValid = user.checkPassword(req.body.password);
+    const isPassValid = user.checkPassword(req.body.password, user.password);
 
     if(!isPassValid) {
       res.status(400).json({message: 'User not found'});
