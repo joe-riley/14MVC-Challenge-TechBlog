@@ -28,7 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
   $navbarButtons.forEach(el => {
     if (el.id === 'showLoginModal') {
       el.addEventListener('click', () => {
-        document.querySelector(".modal").classList.toggle("is-active");  
+        document.querySelector("#loginModal").classList.toggle("is-active");  
+      });
+    }
+    if (el.id === 'showRegisterModal') {
+      el.addEventListener('click', () => {
+        document.querySelector("#registerModal").classList.toggle("is-active");  
       });
     }
   });

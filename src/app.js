@@ -1,32 +1,53 @@
+const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const routes = require('./routes');
+const sequelize = require('../config/connection');
+const helpers = require('./utils/helpers');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// views dir
+require('dotenv').config();
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Views dir
 app.set('views', __dirname + '/views');
 
+// Set app engine
 app.set('view engine', 'hbs');
 app.engine('hbs', exphbs({
   extname: 'hbs',
   defaultLayout: 'main',
   layoutsDir: __dirname + '/views/layouts',
   partialsDir: __dirname + '/views/partials',
+  helpers,
 }));
 
-// public dir
-app.use(express.static(__dirname + '/public'));
+// Public dir
+app.use(express.static(path.join(__dirname,'/public/')));
 
+// Create session for connect sequelize session
+const sess = {
+  secret: process.env.SEQUELIZE_STORE,
+  cookie: {},
+  resave: true,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  }),
+};
 
-// get partials
-// hbs.getPartials().then((partials) => {
-//   console.log(partials);
-// });
+app.use(session(sess));
 
-// Routes
-app.use(require('./routes'));
+// turn on routes
+app.use(routes);
 
-app.listen(PORT, () => {
-  console.log('App listening on PORT ' + PORT);
-})
+sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
+});
