@@ -27,6 +27,17 @@ router.get('/:userId', async (req, res) => {
       where: {
         id: req.params.userId
       },
+      include: [
+        {
+          model: db.Article,
+          attributes: [
+            'id', 
+            'title', 
+            'content',
+            'created_at',
+          ],
+        },
+      ],
     });
 
     if (!user) {
